@@ -83,4 +83,4 @@ jobs:
         with:
           imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           containerAppName: 'your-azure-container-app-name'
-          resourceGroup: 'your-azure-resource-group-name'e'
+          resourceGroup: 'your-azure-resource-group-name'
