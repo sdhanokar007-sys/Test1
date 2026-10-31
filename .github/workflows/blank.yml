@@ -12,8 +12,8 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  # Converts the repository name to lowercase to prevent GHCR character mismatch issues
-  IMAGE_NAME: ${{ github.repository }}
+  # Correctly converts the repository name to lowercase dynamically
+  IMAGE_NAME: ${{ lowercase(github.repository) }}
 
 jobs:
   build-test:
@@ -27,9 +27,6 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      
-      # Optional: Uncomment if running React testing suites
-      # - run: npm test -- --watchAll=false
 
   docker-build:
     needs: build-test
@@ -75,6 +72,7 @@ jobs:
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          # Updated here to use the lowercase env variable
+          imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           containerAppName: 'your-azure-container-app-name'
           resourceGroup: 'your-azure-resource-group-name'
