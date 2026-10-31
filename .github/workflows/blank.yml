@@ -12,8 +12,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  # Correctly converts the repository name to lowercase dynamically
-  IMAGE_NAME: ${{ lowercase(github.repository) }}
+  # We will define IMAGE_NAME dynamically inside the jobs using $GITHUB_ENV
 
 jobs:
   build-test:
@@ -33,6 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # New Step: Dynamically sets a lowercase environment variable safely
+      - name: Set lowercase image name
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Log in to GitHub Container Registry (GHCR)
         uses: docker/login-action@v3
@@ -61,6 +65,11 @@ jobs:
     needs: docker-build
     runs-on: ubuntu-latest
     steps:
+      # New Step: Dynamically sets a lowercase environment variable safely for deploy stage
+      - name: Set lowercase image name
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       # Authenticate securely to Azure using OIDC instead of passwords/keys
       - name: Azure Login
         uses: azure/login@v2
@@ -72,7 +81,6 @@ jobs:
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          # Updated here to use the lowercase env variable
           imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           containerAppName: 'your-azure-container-app-name'
-          resourceGroup: 'your-azure-resource-group-name'
+          resourceGroup: 'your-azure-resource-group-name'e'
