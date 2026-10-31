@@ -82,5 +82,5 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           imageToDeploy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          containerAppName: 'your-azure-container-app-name'
-          resourceGroup: 'your-azure-resource-group-name'
+          containerAppName: 'react1'
+          resourceGroup: 'RG1'
