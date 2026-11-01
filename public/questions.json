@@ -17,14 +17,8 @@
         "questionText": ["What is the command for checking the routes in your rib?"],
         "options":["sh ip eigrp", "sh ip bgp", "sh ip route", "traceroute"],
         "correctOption": "sh ip route"
-      },
-
-         {
-        "id": 4,
-        "questionText": ["What is the command for checking the neighbor networking devices?"],
-        "options":["sh cdp neighbors", "sh ip bgp", "sh ip route", "traceroute"],
-        "correctOption": "sh cdp neighbors"
       }
+
 
       ]
         
